@@ -5,6 +5,15 @@
     </head>
     <body style="text-align:center">
         <h1>Leaderboard</h1>
-        <h2> </h2>
+        <div style="list-style-type:none;">
+            rank    user    votes    percent correct
+            <ul style="list-style-type:none;">
+                {% for user in users %}
+                <li>
+                {{ user['rank'] }}    {{user['username']}}    {{user['votes']}}    {{user['percent_correct']}}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </body>
 </html>

@@ -17,4 +17,9 @@ def team():
 
 @app.route("/leaderboard")
 def leaderboard():
-    return render_template("leaderboard.html")
+    users = [
+        {"id": 1, "rank": 3, "username": "abreu", "votes": 12, "percent_correct": 78},
+        {"id": 2, "rank": 2, "username": "pmyers", "votes": 8, "percent_correct": 98},
+    ]
+    return render_template("leaderboard.html", users=users)
+    
