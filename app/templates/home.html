@@ -11,30 +11,34 @@
             <button style="background-color: blue; color: white;">Leaderboard</button>
         </a>
     </h1>
+
     <h2> Week of Nov 12 </h2>
-    <ul style="list-style-type:none;">
-        {% for game in games %}
-        <li> {{game['sport']}}</li>
-        <li> {{game['date']}} at {{game['time']}}</li>
-        <li style="margin-bottom: 10px">
-            <label>
-                <input type="radio" name="{{game['id']}}" value="{{ game['home_team'] }}" onclick="handleCheckboxClick(this, '{{ game['away_team'] }}')">
-                {{ game['home_team'] }} vs. {{ game['away_team'] }}
-            </label>
-            <label>
-                <input type="radio" name="{{game['id']}}" value="{{ game['home_team'] }}" onclick="handleCheckboxClick(this, '{{ game['away_team'] }}')">
-            </label>
-            <a href="team" target="_blank">
-                <button style="background-color: blue; color: white;">Team Info</button>
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-    <label>
-        Username:
-    </label>
-    <input type="text">
-    <button>Submit</button>
+    <form method="post" action="{{ url_for('submit_votes') }}">
+        <ul style="list-style-type:none;">
+            {% for game in games %}
+            <li> {{game['sport']}}</li>
+            <li> {{game['date']}} at {{game['time']}}</li>
+            <li style="margin-bottom: 10px">
+                <label>
+                    <input type="radio" name="{{game['id']}}" value="{{ game['home_team'] }}">
+                    {{ game['home_team'] }} vs. {{ game['away_team'] }}
+                </label>
+                <label>
+                    <input type="radio" name="{{game['id']}}" value="{{ game['away_team'] }}">
+                </label>
+                <a href="team" target="_blank">
+                    <button style="background-color: blue; color: white;">Team Info</button>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <input type="hidden" name="games" value='{{ games | tojson | safe }}'>
+
+        <label>Username:</label>
+        <input name="username" type="text">
+        <button type="Submit">Submit</button>
+    </form>
 </body>
 
 </html>
