@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trinity University Athletic Schedule</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        h1 {
+            color: maroon;
+        }
+
+        h2 {
+            color: maroon;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .game-container {
+            margin-bottom: 10px;
+        }
+
+        li:nth-child(even) {
+            background-color: maroon;
+            color: white;
+        }
+
+        li:nth-child(odd) {
+            background-color: white;
+        }
+
+        button {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Trinity University Athletic Schedule
+        <a href="leaderboard" target="_blank">
+            <button>Leaderboard</button>
+        </a>
+    </h1>
+
+    <h2> Week of Nov 12 </h2>
+    <form method="post" action="{{ url_for('submit_votes') }}">
+        <ul>
+            {% for game in games %}
+            <div class="game-container">
+                <li>{{ game['sport'] }}</li>
+                <li>{{ game['date'] }} at {{ game['time'] }}</li>
+                <li>
+                    <label>
+                        <input type="radio" name="{{ game['id'] }}" value="{{ game['home_team'] }}">
+                        {{ game['home_team'] }} vs. {{ game['away_team'] }}
+                    </label>
+                    <label>
+                        <input type="radio" name="{{ game['id'] }}" value="{{ game['away_team'] }}">
+                    </label>
+                    <a href="team" target="_blank">
+                        <button>Team Info</button>
+                    </a>
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+
+        <input type="hidden" name="games" value='{{ games | tojson | safe }}'>
+
+        <label>Username:</label>
+        <input name="username" type="text">
+        <button type="Submit">Submit</button>
+    </form>
+</body>
+
+</html>
