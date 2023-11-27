@@ -8,12 +8,9 @@
             text-align: center;
         }
 
-        h1 {
-            color: maroon;
-        }
-
+        h1,
         h2 {
-            color: maroon;
+            color: black; /* Set header text color to black */
         }
 
         ul {
@@ -27,7 +24,7 @@
 
         li:nth-child(even) {
             background-color: maroon;
-            color: white;
+            color: white; 
         }
 
         li:nth-child(odd) {
@@ -35,8 +32,34 @@
         }
 
         button {
-            background-color: blue;
             color: white;
+        }
+
+        /* Styles for the username input and submit button */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: maroon;
+        }
+
+        input[name="username"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        button[type="Submit"] {
+            background-color: maroon;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Styles for the Leaderboard button */
+        a button {
+            background-color: maroon; 
         }
     </style>
 </head>
@@ -73,7 +96,7 @@
 
         <input type="hidden" name="games" value='{{ games | tojson | safe }}'>
 
-        <label>Username:</label>
+        <label for="username">Username:</label>
         <input name="username" type="text">
         <button type="Submit">Submit</button>
     </form>
