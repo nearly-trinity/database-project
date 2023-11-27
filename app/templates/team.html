@@ -5,7 +5,17 @@
     </head>
     <body style="text-align:center">
         <h1>Team Information</h1>
-        <h2> </h2>
+        <ul style="list-style-type:none; margin-bottom: 10px">
+        <li> Team: {{team["team_name"]}} </li>
+        <li> Location: {{team["team_location"]}} </li>
+        </ul>
+
+        <ul style="list-style-type:none; margin-bottom: 10px">
+            <li> Player    Jersey#    Points </li>
+            {% for player in players %}
+                <li> {{ player["first_name"] }} {{player['last_name']}}     {{player['jersey_number']}}    {{player['points']}}</li>
+            {% endfor %}
+        </ul>
     </body>
 </html>
 

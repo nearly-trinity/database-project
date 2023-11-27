@@ -13,7 +13,9 @@ def home():
 
 @app.route("/team")
 def team():
-    return render_template("team.html")
+    team ={"team_id": 0, "team_name": "Trinity", "team_location": "Trinity"}
+    players = [{"player_id": 0, "first_name": "Mary", "last_name": "Smith", "position": "setter", "jersey_number": 5, "points": 12, "assists": 4}]
+    return render_template("team.html", team=team, players=players)
 
 @app.route("/leaderboard")
 def leaderboard():
