@@ -6,11 +6,20 @@
     <style>
         body {
             text-align: center;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            background-color: #f5f5f5;
         }
 
-        h1,
+        h1 {
+            color: #333; 
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
         h2 {
-            color: black; /* Set header text color to black */
+            color: #333; 
+            font-size: 25px;
+            margin-bottom: 20px;
         }
 
         ul {
@@ -19,47 +28,56 @@
         }
 
         .game-container {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         li:nth-child(even) {
             background-color: maroon;
-            color: white; 
+            color: white;
         }
 
         li:nth-child(odd) {
-            background-color: white;
+            background-color: #f5f5f5; /* Light gray background for odd rows */
         }
 
         button {
             color: white;
-        }
-
-        /* Styles for the username input and submit button */
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: maroon;
-        }
-
-        input[name="username"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-        }
-
-        button[type="Submit"] {
+            font-size: 16px;
             background-color: maroon;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        /* Styles for the Leaderboard button */
-        a button {
-            background-color: maroon; 
+        /* Styles for the username input and submit button */
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: maroon;
+            font-size: 18px;
+        }
+
+        input[name="username"] {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        button[type="Submit"] {
+            font-size: 12px;
+        }
+
+        .team-info-button {
+            background-color: maroon;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -67,17 +85,17 @@
 <body>
     <h1>Trinity University Athletic Schedule
         <a href="leaderboard" target="_blank">
-            <button>Leaderboard</button>
-        </a>
+            <button>&#127942; <!-- Trophy icon --></button>
+        </a>        
     </h1>
 
-    <h2> Week of Nov 12 </h2>
+    <h2>Week of Nov 12</h2>
     <form method="post" action="{{ url_for('submit_votes') }}">
         <ul>
             {% for game in games %}
             <div class="game-container">
-                <li>{{ game['sport'] }}</li>
                 <li>{{ game['date'] }} at {{ game['time'] }}</li>
+                <li>{{ game['sport'] }}</li>
                 <li>
                     <label>
                         <input type="radio" name="{{ game['id'] }}" value="{{ game['home_team'] }}">
@@ -86,8 +104,8 @@
                     <label>
                         <input type="radio" name="{{ game['id'] }}" value="{{ game['away_team'] }}">
                     </label>
-                    <a href="team" target="_blank">
-                        <button>Team Info</button>
+                    <a href="team" target="_blank" class="team-info-button">
+                        Team Info
                     </a>
                 </li>
             </div>
