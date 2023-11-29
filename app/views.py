@@ -2,7 +2,6 @@ from app import app
 from flask import flash, Flask, render_template, request, session
 import json
 
-
 @app.route("/")
 def home():
     games = [
@@ -10,6 +9,7 @@ def home():
         {"id": "2", "home_team": "Trinity", "away_team": "UT Dallas", "sport": "Volleyball", "date": "Nov 14", "time": "6PM"},
         {"id": "3", "home_team": "Trinity", "away_team": "Hardin-Simmons", "sport": "Track and Field", "date": "Nov 18", "time": "11AM"},
     ]
+
     return render_template("home.html", games=games)
 
 @app.route("/team")
