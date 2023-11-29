@@ -2,14 +2,38 @@ from app import app
 from flask import flash, Flask, render_template, request, session
 import json
 
+from datetime import datetime
+
+# current date and time
+date_time = datetime.now()
+
+# format specification
+format = '%Y-%m-%d at %H:%M:%S'
+
+import sqlite3
+con = sqlite3.connect('database.db', check_same_thread=False)
+cur = con.cursor()
+
 @app.route("/")
 def home():
-    games = [
-        {"id": "1", "home_team": "Trinity", "away_team": "Southwestern", "sport": "Football", "date": "Nov 13", "time": "7PM"},
-        {"id": "2", "home_team": "Trinity", "away_team": "UT Dallas", "sport": "Volleyball", "date": "Nov 14", "time": "6PM"},
-        {"id": "3", "home_team": "Trinity", "away_team": "Hardin-Simmons", "sport": "Track and Field", "date": "Nov 18", "time": "11AM"},
-    ]
-
+    games = cur.execute('''
+        SELECT 
+            SE.event_id,
+            SE.event_name,
+            SE.event_location,
+            STRFTIME('%m/%d/%Y at %H:%M', event_date),
+            T1.team_name AS home_team_name,
+            T2.team_name AS away_team_name,
+            SE.sport_type
+        FROM SportingEvents SE
+        JOIN Teams T1 ON SE.home_team_id = T1.team_id
+        JOIN Teams T2 ON SE.away_team_id = T2.team_id
+        WHERE SE.event_date >= date('now')
+        ORDER BY SE.event_date
+        ''')
+    games = games.fetchall()
+    print(games)
+    
     return render_template("home.html", games=games)
 
 @app.route("/team")
