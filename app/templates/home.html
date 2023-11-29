@@ -53,15 +53,15 @@
         <ul>
             {% for game in games %}
             <div class="game-container">
-                <li>{{ game['sport'] }}</li>
-                <li>{{ game['date'] }} at {{ game['time'] }}</li>
+                <li>{{ game[6] }}</li>
+                <li>{{ game[3] }}</li>
                 <li>
                     <label>
-                        <input type="radio" name="{{ game['id'] }}" value="{{ game['home_team'] }}">
-                        {{ game['home_team'] }} vs. {{ game['away_team'] }}
+                        <input type="radio" name="{{ game[0] }}" value="{{ game[4] }}">
+                        {{ game[4] }} vs. {{ game[5] }}
                     </label>
                     <label>
-                        <input type="radio" name="{{ game['id'] }}" value="{{ game['away_team'] }}">
+                        <input type="radio" name="{{ game[0] }}" value="{{ game[5] }}">
                     </label>
                     <a href="team" target="_blank">
                         <button>Team Info</button>
