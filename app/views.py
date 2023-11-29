@@ -54,7 +54,7 @@ def submit_votes():
 
     selected_options = {}
     for game in games:
-        selected_options[game['id']] = request.form.get(f"{game['id']}", None)
+        selected_options[game[0]] = request.form.get(f"{game[0]}", None)
 
     return render_template("leaderboard.html", username=username, selections=selected_options)
 
