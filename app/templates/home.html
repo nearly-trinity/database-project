@@ -6,14 +6,20 @@
     <style>
         body {
             text-align: center;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            background-color: #f5f5f5;
         }
 
         h1 {
-            color: maroon;
+            color: #333; 
+            font-size: 30px;
+            margin-bottom: 20px;
         }
-
         h2 {
-            color: maroon;
+            color: #333; 
+            font-size: 25px;
+            margin-bottom: 20px;
         }
 
         ul {
@@ -22,7 +28,7 @@
         }
 
         .game-container {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         li:nth-child(even) {
@@ -31,12 +37,55 @@
         }
 
         li:nth-child(odd) {
-            background-color: white;
+            background-color: #f5f5f5; /* Light gray background for odd rows */
+            margin-top: 10px;
+            display:inline-block;
         }
 
         button {
-            background-color: blue;
             color: white;
+            font-size: 16px;
+            background-color: maroon;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: maroon;
+            font-size: 18px;
+        }
+
+        /* Styles for the username input and submit button */
+        label2 {
+            display: block;
+            margin-bottom: 10px;
+            color: maroon;
+            font-size: 18px;
+        }
+
+        input[name="username"] {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        button[type="Submit"] {
+            font-size: 12px;
+        }
+
+        .team-info-button {
+            background-color: maroon;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -44,11 +93,11 @@
 <body>
     <h1>Trinity University Athletic Schedule
         <a href="leaderboard" target="_blank">
-            <button>Leaderboard</button>
-        </a>
+            <button>&#127942; <!-- Trophy icon --></button>
+        </a>        
     </h1>
 
-    <h2> Week of Nov 12 </h2>
+    <h2>Week of Nov 12</h2>
     <form method="post" action="{{ url_for('submit_votes') }}">
         <ul>
             {% for game in games %}
@@ -63,8 +112,8 @@
                     <label>
                         <input type="radio" name="{{ game[0] }}" value="{{ game[5] }}">
                     </label>
-                    <a href="team" target="_blank">
-                        <button>Team Info</button>
+                    <a href="team" target="_blank" class="team-info-button">
+                        Team Info
                     </a>
                 </li>
             </div>
@@ -73,7 +122,7 @@
 
         <input type="hidden" name="games" value='{{ games | tojson | safe }}'>
 
-        <label>Username:</label>
+        <label2 for="username">Username:</label2>
         <input name="username" type="text">
         <button type="Submit">Submit</button>
     </form>
