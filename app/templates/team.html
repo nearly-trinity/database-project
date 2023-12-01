@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,13 +34,15 @@
             margin-top: 10px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: left;
         }
     </style>
 </head>
+
 <body>
     <h1>Team Information</h1>
 
@@ -50,29 +53,24 @@
             <div class="record" id="team1-record">
                 <p> Record ??-??</p>
             </div>
-            <table id="team1-roster"> 
-            <!-- put into tables where each player has its own row  -->
+            <table id="team1-roster">
                 <tr>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Position</th>
                     <th>Jersey Number</th>
                 </tr>
+                {% for player in home %}
                 <tr>
-                    <td>Player 1 First</td>
-                    <td>Player 1 Last</td>
-                    <td> position</td>
-                    <td> 1</td>
+                    <td>{{ player[0] }}</td>
+                    <td>{{ player[1] }}</td>
+                    <td>{{ player[2] }}</td>
+                    <td>{{ player[3] }}</td>
                 </tr>
-                <tr>
-                    <td>Player 2 First</td>
-                    <td>Player 2 Last</td>
-                    <td>Position </td>
-                    <td>2</td>
-                </tr>
+                {% endfor %}
             </table>
         </div>
-        
+
         <div class="team-info" id="team2">
             <h2>Team 2</h2>
             <!-- Team 2 information here -->
@@ -86,20 +84,17 @@
                     <th>Position</th>
                     <th>Jersey Number</th>
                 </tr>
+                {% for player in away %}
                 <tr>
-                    <td>Player 1 First</td>
-                    <td>Player 1 Last</td>
-                    <td>Position </td>
-                    <td>1</td>
+                    <td>{{ player[0] }}</td>
+                    <td>{{ player[1] }}</td>
+                    <td>{{ player[2] }}</td>
+                    <td>{{ player[3] }}</td>
                 </tr>
-                <tr>
-                    <td>Player 2 First</td>
-                    <td>Player 2 Last</td>
-                    <td>Position </td>
-                    <td>2</td>
-                </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
 </body>
+
 </html>
