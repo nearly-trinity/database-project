@@ -24,7 +24,9 @@ def home():
             STRFTIME('%m/%d/%Y at %H:%M', event_date),
             T1.team_name AS home_team_name,
             T2.team_name AS away_team_name,
-            SE.sport_type
+            SE.sport_type,
+            SE.home_team_id,
+            SE.away_team_id
         FROM SportingEvents SE
         JOIN Teams T1 ON SE.home_team_id = T1.team_id
         JOIN Teams T2 ON SE.away_team_id = T2.team_id
@@ -36,9 +38,12 @@ def home():
     
     return render_template("home.html", games=games)
 
-@app.route("/team")
+@app.route('/team')
 def team():
-    return render_template("team.html")
+    team_id1 = request.args.get('team_id1')
+    team_id2 = request.args.get('team_id2')
+
+    return render_template("team.html", team_id1=team_id1, team_id2=team_id2)
 
 @app.route("/leaderboard")
 def leaderboard():
