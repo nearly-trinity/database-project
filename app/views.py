@@ -34,7 +34,6 @@ def home():
         ORDER BY SE.event_date
         ''')
     games = games.fetchall()
-    print(games)
     
     return render_template("home.html", games=games)
 
@@ -42,8 +41,26 @@ def home():
 def team():
     team_id1 = request.args.get('team_id1')
     team_id2 = request.args.get('team_id2')
-    print(team_id1)
-    print(team_id2)
+    game_id = request.args.get('game_id')
+    print(game_id)
+
+    game_info = cur.execute('''
+        SELECT 
+            SE.event_id,
+            SE.event_name,
+            SE.event_location,
+            STRFTIME('%m/%d/%Y at %H:%M', event_date),
+            T1.team_name AS home_team_name,
+            T2.team_name AS away_team_name,
+            SE.sport_type,
+            SE.home_team_id,
+            SE.away_team_id
+        FROM SportingEvents SE
+        JOIN Teams T1 ON SE.home_team_id = T1.team_id
+        JOIN Teams T2 ON SE.away_team_id = T2.team_id
+        WHERE SE.event_id = ''' + game_id + '''
+    ''').fetchone()
+    print(game_info)
 
     home_team = cur.execute('''
         SELECT 
@@ -64,7 +81,7 @@ def team():
         WHERE team_id = ''' + team_id2 + '''    
     ''').fetchall()
     
-    return render_template("team.html", home=home_team, away=away_team)
+    return render_template("team.html", home=home_team, away=away_team, game_info=game_info)
 
 @app.route("/leaderboard")
 def leaderboard():
