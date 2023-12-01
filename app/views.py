@@ -58,9 +58,24 @@ def team():
         FROM SportingEvents SE
         JOIN Teams T1 ON SE.home_team_id = T1.team_id
         JOIN Teams T2 ON SE.away_team_id = T2.team_id
-        WHERE SE.event_id = ''' + game_id + '''
+        WHERE SE.event_id = ''' + game_id + ''';
     ''').fetchone()
-    print(game_info)
+
+    home_coach = cur.execute('''
+        SELECT
+            first_name,
+            last_name
+        FROM Coaches
+        WHERE team_id = ''' + team_id1 + ''';
+    ''').fetchone()
+    
+    away_coach = cur.execute('''
+        SELECT
+            first_name,
+            last_name
+        FROM Coaches
+        WHERE team_id = ''' + team_id2 + ''';
+    ''').fetchone()
 
     home_team = cur.execute('''
         SELECT 
@@ -69,7 +84,7 @@ def team():
             position,
             jersey_number
         FROM Players
-        WHERE team_id = ''' + team_id1 + '''    
+        WHERE team_id = ''' + team_id1 + ''';  
     ''').fetchall()
     away_team = cur.execute('''
         SELECT 
@@ -78,10 +93,10 @@ def team():
             position,
             jersey_number
         FROM Players
-        WHERE team_id = ''' + team_id2 + '''    
+        WHERE team_id = ''' + team_id2 + ''';    
     ''').fetchall()
     
-    return render_template("team.html", home=home_team, away=away_team, game_info=game_info)
+    return render_template("team.html", home=home_team, away=away_team, game_info=game_info, home_coach=home_coach, away_coach=away_coach)
 
 @app.route("/leaderboard")
 def leaderboard():
