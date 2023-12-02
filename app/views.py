@@ -100,7 +100,36 @@ def team():
 
 @app.route("/leaderboard")
 def leaderboard():
-    return render_template("leaderboard.html")
+    
+    #users=[]
+    
+    # users = cur.execute('''
+    #     SELECT 
+    #         user.username,
+    #         count(*) as totalPredictions,
+    #         (SELECT count(*)
+    #         FROM GameResults GR, UserVotes
+    #         WHERE user.user_id=UserVotes.user_id AND GR.event_id = UserVotes.event_id AND GR.winner_team_id = UserVotes.chosen_winner_id) as correctPredicitons
+    #     FROM UserVotes UV
+    #     JOIN Users user ON user.user_id = UV.user_id
+    #     GROUP BY UV.user_id
+    # ''').fetchall()
+    
+    users = cur.execute('''
+        SELECT
+            user.username,
+            COUNT(*) AS totalPredictions,
+            SUM(CASE WHEN GR.winner_team_id = UV.chosen_winner_id THEN 1 ELSE 0 END) AS correctPredictions,
+            SUM(CASE WHEN GR.winner_team_id = UV.chosen_winner_id THEN 1 ELSE 0 END * 100) / COUNT(*) AS correctRatio
+        FROM UserVotes UV
+        JOIN Users user ON user.user_id = UV.user_id
+        LEFT JOIN GameResults GR ON GR.event_id = UV.event_id
+        GROUP BY UV.user_id, user.username
+        ORDER BY correctRatio DESC;
+    ''')
+    
+    print(users)
+    return render_template("leaderboard.html", users=users)
 
 @app.route("/submit_votes", methods=['POST'])
 def submit_votes():
