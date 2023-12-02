@@ -7,7 +7,7 @@
         body {
             text-align: center;
             font-family: 'Arial', sans-serif;
-            font-size: 16px;
+            font-size: 20px;
         }
 
         h1,
@@ -17,26 +17,37 @@
         }
 
         .maroon-bg {
-            padding: 18px;
-        }
-        .white-bg {
-            padding: 1px;
-        }
-
-        .maroon-bg {
             background-color: maroon;
             color: white;
+            padding: 5px;
         }
 
         .white-bg {
             background-color: white;
             color: maroon;
+            padding: 1px;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
         }
     </style>
 </head>
 
 <body>
     <h1>Leaderboard</h1>
+
+    <ul>
+            {% for user in users %}
+                {% set index = loop.index0 %}
+                {% set userClass = 'maroon-bg' if index % 2 == 0 else 'white-bg' %}
+                <li class="{{ userClass }}">
+                    <h4>{{ index + 1 }}. {{ user[0] }}: {{user[3]}}%</h4>
+                </li>
+            {% endfor %}
+    </ul>
 
     <script>
         // assuming this is how our db will work 
@@ -53,10 +64,12 @@
         // Display the sorted leaderboard with alternating background colors
         // document.write('<h2>Leaderboard</h2>');
 
-        leaderboardData.forEach(function (user, index) {
-            var userClass = index % 2 === 0 ? 'maroon-bg' : 'white-bg';
-            document.write('<h3 class="' + userClass + '">' + (index + 1) + '. ' + user.username + ': ' + user.percentage + '%</h3>');
-        });
+        //leaderboardData.forEach(function (user, index) {
+        //    var userClass = index % 2 === 0 ? 'maroon-bg' : 'white-bg';
+        //    document.write('<h3 class="' + userClass + '">' + (index + 1) + '. ' + user.username + ': ' + "96" + '%</h3>');
+        //});
+
+        
     </script>
 </body>
 
