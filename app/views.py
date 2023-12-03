@@ -98,23 +98,48 @@ def team():
     
     return render_template("team.html", home=home_team, away=away_team, game_info=game_info, home_coach=home_coach, away_coach=away_coach)
 
+
+def get_user_votes(username):
+
+    cur.execute("SELECT user_id FROM Users WHERE username=?", (username,))
+    user_result = cur.fetchone()
+
+    if user_result:
+        user_id = user_result[0]
+
+        cur.execute("""
+            SELECT 
+                SportingEvents.event_name,
+                GameResults.home_team_score,
+                GameResults.away_team_score,
+                Teams.team_name AS chosen_winner,
+                CASE
+                    WHEN Teams.team_id = GameResults.winner_team_id THEN 1
+                    ELSE 0
+                END AS voted_correctly
+            FROM 
+                UserVotes
+                JOIN SportingEvents ON UserVotes.event_id = SportingEvents.event_id
+                JOIN GameResults ON UserVotes.event_id = GameResults.event_id
+                JOIN Teams ON UserVotes.chosen_winner_id = Teams.team_id
+            WHERE 
+                UserVotes.user_id = ?
+            ORDER BY SportingEvents.event_date DESC;
+        """, (user_id,))
+
+        votes_data = cur.fetchall()
+        return votes_data
+
+    return []
+
+
+
+
 @app.route("/leaderboard")
 def leaderboard():
-    
-    #users=[]
-    
-    # users = cur.execute('''
-    #     SELECT 
-    #         user.username,
-    #         count(*) as totalPredictions,
-    #         (SELECT count(*)
-    #         FROM GameResults GR, UserVotes
-    #         WHERE user.user_id=UserVotes.user_id AND GR.event_id = UserVotes.event_id AND GR.winner_team_id = UserVotes.chosen_winner_id) as correctPredicitons
-    #     FROM UserVotes UV
-    #     JOIN Users user ON user.user_id = UV.user_id
-    #     GROUP BY UV.user_id
-    # ''').fetchall()
-    
+
+    votes = get_user_votes(session['username'])
+
     users = cur.execute('''
         SELECT
             user.username,
@@ -127,9 +152,9 @@ def leaderboard():
         GROUP BY UV.user_id, user.username
         ORDER BY correctRatio DESC;
     ''')
+
     
-    print(users)
-    return render_template("leaderboard.html", users=users)
+    return render_template("leaderboard.html", users=users, votes=votes)
 
 @app.route("/submit_votes", methods=['POST'])
 def submit_votes():
@@ -143,7 +168,7 @@ def submit_votes():
     for game in games:
         selected_options[game[0]] = request.form.get(f"{game[0]}", None)
 
-    return render_template("leaderboard.html", username=username, selections=selected_options)
+    return leaderboard()
 
 
 @app.route("/login")
