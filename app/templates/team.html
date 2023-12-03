@@ -40,11 +40,20 @@
             padding: 8px;
             text-align: left;
         }
+
+        tr:nth-child(even) {
+            background-color: maroon;
+            color: white; /* Text color for better contrast */
+        }
+
+        tr:nth-child(odd) {
+            background-color: white;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Matchup Information</h1>
+    <h1>Game Information</h1>
     <h3>{{game_info[1]}}</h3>
 
     <div class="team-container">
