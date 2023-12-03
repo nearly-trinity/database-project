@@ -142,15 +142,16 @@ def leaderboard():
     users = cur.execute('''
         SELECT
             user.username,
-            COUNT(CASE WHEN GR.event_id = UV.event_id THEN 1 ELSE 0 END) AS totalPredictions,
-            SUM(CASE WHEN GR.winner_team_id = UV.chosen_winner_id THEN 1 ELSE 0 END) AS correctPredictions,
-            SUM(CASE WHEN GR.winner_team_id = UV.chosen_winner_id THEN 1 ELSE 0 END * 100) / COUNT(CASE WHEN GR.event_id = UV.event_id THEN 1 ELSE 0 END) AS correctRatio
+            SUM(CASE WHEN GR.event_id = UV.event_id THEN 1 ELSE 0 END) AS totalPredictions,
+            SUM(CASE WHEN GR.event_id = UV.event_id AND GR.winner_team_id = UV.chosen_winner_id THEN 1 ELSE 0 END) AS correctPredictions,
+            SUM(CASE WHEN GR.event_id = UV.event_id AND GR.winner_team_id = UV.chosen_winner_id THEN 1 ELSE 0 END * 100) / SUM(CASE WHEN GR.event_id = UV.event_id THEN 1 ELSE 0 END) AS correctRatio
         FROM UserVotes UV
         JOIN Users user ON user.user_id = UV.user_id
         LEFT JOIN GameResults GR ON GR.event_id = UV.event_id
         GROUP BY UV.user_id, user.username
         ORDER BY correctRatio DESC;
-    ''')
+    ''').fetchall()
+    print(users)
 
     
     return render_template("leaderboard.html", users=users, votes=votes)
