@@ -151,8 +151,6 @@ def leaderboard():
         GROUP BY UV.user_id, user.username
         ORDER BY correctRatio DESC;
     ''').fetchall()
-    print(users)
-
     
     return render_template("leaderboard.html", users=users, votes=votes)
 
@@ -166,7 +164,6 @@ def submit_votes():
 
     if user_result:
         user_id = user_result[0]
-        print(user_id)
 
         games = request.form.get('games')
         games = json.loads(games) if games else []
