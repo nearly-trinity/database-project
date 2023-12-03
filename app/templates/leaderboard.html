@@ -17,6 +17,13 @@
             /* Dark gray color for headers */
         }
 
+        h5 {
+            color: #333;
+            /* Dark gray color for headers */
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
         .maroon-bg {
             background-color: maroon;
             color: white;
@@ -72,7 +79,7 @@
             </ul>
         </div>
         <div class="votes-container">
-            <h3>Your Votes</h3>
+            <h5>Your Votes</h5>
             <ul>
                 {% for vote in votes %}
                 <li class="{% if vote[4] %}correct{% endif %}">
