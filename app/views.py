@@ -42,7 +42,6 @@ def team():
     team_id1 = request.args.get('team_id1')
     team_id2 = request.args.get('team_id2')
     game_id = request.args.get('game_id')
-    print(game_id)
 
     game_info = cur.execute('''
         SELECT 
@@ -161,14 +160,37 @@ def submit_votes():
     username = request.form.get('username')
     session['username'] = username
 
-    games = request.form.get('games')
-    games = json.loads(games) if games else []
+    cur.execute("SELECT user_id FROM Users WHERE username=?", (username,))
+    user_result = cur.fetchone()
 
-    selected_options = {}
-    for game in games:
-        selected_options[game[0]] = request.form.get(f"{game[0]}", None)
+    if user_result:
+        user_id = user_result[0]
+        print(user_id)
 
-    return leaderboard()
+        games = request.form.get('games')
+        games = json.loads(games) if games else []
+
+        selected_options = {}
+        for game in games:
+            selected_options[game[0]] = request.form.get(f"{game[0]}", None)
+
+        for event_id, chosen_winner in selected_options.items():
+            if chosen_winner:
+                cur.execute("SELECT sport_type FROM SportingEvents WHERE event_id=?", (event_id,))
+                sport_type_result = cur.fetchone()
+                if sport_type_result:
+                    sport_type = sport_type_result[0]
+
+                    cur.execute("""
+                        INSERT INTO UserVotes (user_id, event_id, chosen_winner_id)
+                        VALUES (?, ?, (SELECT team_id FROM Teams WHERE team_name = ? AND sport = ?));
+                    """, (user_id, event_id, chosen_winner, sport_type))
+                    con.commit()
+                    
+
+        return leaderboard()
+
+    return "User not found."
 
 
 @app.route("/login")
